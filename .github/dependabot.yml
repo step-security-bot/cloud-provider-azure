@@ -23,3 +23,318 @@ updates:
     labels:
       - "release-note-none"
     open-pull-requests-limit: 5
+
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /site/themes/docsy/assets/vendor/Font-Awesome/js-packages/@fortawesome/fontawesome-common-types
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /site/themes/docsy/assets/vendor/Font-Awesome/js-packages/@fortawesome/fontawesome-free
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /site/themes/docsy/assets/vendor/Font-Awesome/js-packages/@fortawesome/fontawesome-svg-core
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /site/themes/docsy/assets/vendor/Font-Awesome/js-packages/@fortawesome/free-brands-svg-icons
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /site/themes/docsy/assets/vendor/Font-Awesome/js-packages/@fortawesome/free-regular-svg-icons
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /site/themes/docsy/assets/vendor/Font-Awesome/js-packages/@fortawesome/free-solid-svg-icons
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /site/themes/docsy/assets/vendor/bootstrap
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/Azure/go-ansiterm
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/Azure/go-autorest/autorest/adal
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/Azure/go-autorest/autorest/date
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/Azure/go-autorest/autorest
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/Azure/go-autorest/autorest/mocks
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/Azure/go-autorest/autorest/to
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/Azure/go-autorest/autorest/validation
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/Azure/go-autorest/logger
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/Azure/go-autorest/tracing
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/NYTimes/gziphandler
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /vendor/github.com/blang/semver
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/cespare/xxhash/v2
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/felixge/httpsnoop
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/fsnotify/fsnotify
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/go-logr/logr
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/go-openapi/jsonpointer
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/go-openapi/jsonreference
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/go-openapi/swag
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/golang-jwt/jwt/v4
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/google/gofuzz
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/google/uuid
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/josharian/intern
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/json-iterator/go
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/moby/term
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /vendor/github.com/nxadm/tail
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/nxadm/tail
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/onsi/ginkgo
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /vendor/github.com/onsi/gomega
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/onsi/gomega
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/prometheus/procfs
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/spf13/cobra
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/spf13/pflag
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/github.com/stretchr/objx
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/go.etcd.io/etcd/client/v3
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/go.opentelemetry.io/contrib
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/go.opentelemetry.io/otel/exporters/otlp
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/go.opentelemetry.io/otel
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/go.opentelemetry.io/otel/metric
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/go.opentelemetry.io/otel/sdk/export/metric
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/go.opentelemetry.io/otel/sdk/metric
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/go.opentelemetry.io/otel/trace
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/go.uber.org/atomic
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/go.uber.org/multierr
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/go.uber.org/zap
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /vendor/golang.org/x/net/http2
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/golang.org/x/oauth2
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/golang.org/x/term
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/google.golang.org/grpc
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/gopkg.in/yaml.v2
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/gopkg.in/yaml.v3
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/k8s.io/cloud-provider
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/k8s.io/klog/v2
+    schedule:
+      interval: daily
+
+  - package-ecosystem: gomod
+    directory: /vendor/sigs.k8s.io/yaml
+    schedule:
+      interval: daily

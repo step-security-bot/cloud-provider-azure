@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.16.6-stretch AS builder
+FROM golang:1.16.6-stretch@sha256:9be20fec15ebf0f28d16b03cd93a2152513da0e85af45e3f3d3381deab818bf5 AS builder
 ARG ENABLE_GIT_COMMAND=true
 WORKDIR /go/src/sigs.k8s.io/cloud-provider-azure
 COPY . .
