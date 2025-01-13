@@ -24,6 +24,29 @@ updates:
         - "minor"
         - "major"
   - package-ecosystem: "gomod"
+    directory: "/tests"
+    open-pull-requests-limit: 1
+    schedule:
+      interval: daily
+      time: "20:00"
+      timezone: "Asia/Shanghai"
+    labels:
+      - "area/dependency"
+      - "release-note-none"
+      - "ok-to-test"
+      - "kind/cleanup"
+      - "lgtm"
+      - "approved"
+    groups:
+      all:
+        applies-to: version-updates
+        patterns:
+        - "*"
+        update-types:
+        - "patch"
+        - "minor"
+        - "major"
+  - package-ecosystem: "gomod"
     directory: "/health-probe-proxy"
     open-pull-requests-limit: 1
     schedule:
@@ -235,11 +258,11 @@ updates:
       - "kind/cleanup"
       - "lgtm"
       - "approved"
-      - "release-1.29"
-    target-branch: "release-1.29"
+      - "release-1.32"
+    target-branch: "release-1.32"
     ignore:
       - dependency-name: "k8s.io/*"
-        versions: [">=0.30.0"]
+        versions: [">=0.33.0"]
     groups:
       all:
         applies-to: version-updates
@@ -255,7 +278,7 @@ updates:
       interval: daily
       time: "01:00"
       timezone: "Asia/Shanghai"
-    target-branch: "release-1.29"
+    target-branch: "release-1.32"
     labels:
       - "area/dependency"
       - "release-note-none"
@@ -263,14 +286,14 @@ updates:
       - "kind/testing"
       - "lgtm"
       - "approved"
-      - "release-1.29"
+      - "release-1.32"
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "daily"
       time: "01:00"
       timezone: "Asia/Shanghai"
-    target-branch: "release-1.29"
+    target-branch: "release-1.32"
     labels:
       - "area/dependency"
       - "release-note-none"
@@ -278,7 +301,7 @@ updates:
       - "kind/cleanup"
       - "lgtm"
       - "approved"
-      - "release-1.29"
+      - "release-1.32"
   - package-ecosystem: "gomod"
     directory: "/"
     open-pull-requests-limit: 1
