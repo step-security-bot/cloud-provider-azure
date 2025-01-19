@@ -23,6 +23,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"k8s.io/klog/v2"
 )
 
 type Etag struct {
@@ -40,6 +41,8 @@ func AppendEtag(req *policy.Request) (*http.Response, error) {
 		if err != nil {
 			return nil, err
 		}
+		klog.V(4).Infof("append etag for %s, %q", req.Raw().URL, etag.ETag)
+
 		if etag.ETag != "" {
 			req.Raw().Header.Set("If-Match", string(etag.ETag))
 		}

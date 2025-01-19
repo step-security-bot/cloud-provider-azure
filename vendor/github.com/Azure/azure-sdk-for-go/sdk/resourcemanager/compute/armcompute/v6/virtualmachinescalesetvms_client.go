@@ -19,6 +19,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"k8s.io/klog/v2"
 )
 
 // VirtualMachineScaleSetVMsClient contains the methods for the VirtualMachineScaleSetVMs group.
@@ -1445,6 +1446,9 @@ func (client *VirtualMachineScaleSetVMsClient) update(ctx context.Context, resou
 	if err != nil {
 		return nil, err
 	}
+	klog.V(2).Infof("VirtualMachineScaleSetVMsClient.update %s", req.Raw().Header)
+
+	
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err

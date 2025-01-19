@@ -27,6 +27,7 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	api "go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/metric/noop"
+	"k8s.io/klog/v2"
 
 	"sigs.k8s.io/cloud-provider-azure/pkg/azclient/policy/ratelimit"
 	"sigs.k8s.io/cloud-provider-azure/pkg/azclient/policy/retryrepectthrottled"
@@ -88,6 +89,7 @@ func (c *ARMContext) Observe(ctx context.Context, err error) {
 // Done finishes the ARMContext and records the latency.
 func (c *ARMContext) Done(ctx context.Context) {
 	elapsed := time.Since(c.startedAt).Seconds()
+	klog.V(3).Infof("ARMRequestLatency %f, %s/%s", elapsed, c.attributes[2].Value.AsString(), c.attributes[3].Value.AsString())
 	ARMRequestLatency().Record(ctx, elapsed, api.WithAttributes(c.attributes...))
 }
 
@@ -169,7 +171,7 @@ func Setup(meter api.Meter) error {
 
 func setupARMRequestLatency(meter api.Meter) error {
 	m, err := meter.Float64Histogram(
-		"arm.request.duration",
+		"arm_request_duration",
 		api.WithUnit("s"),
 		api.WithDescription("Measures the duration of Azure ARM API calls."),
 		api.WithExplicitBucketBoundaries(.1, .25, .5, 1, 2.5, 5, 10, 60, 300, 600),

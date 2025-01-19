@@ -30,7 +30,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v6"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
 	"github.com/samber/lo"
-	"golang.org/x/sync/errgroup"
 
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/types"
@@ -39,6 +38,7 @@ import (
 	"k8s.io/klog/v2"
 	"k8s.io/utils/ptr"
 
+	"sigs.k8s.io/cloud-provider-azure/pkg/azclient/virtualmachinescalesetvmclient"
 	azcache "sigs.k8s.io/cloud-provider-azure/pkg/cache"
 	"sigs.k8s.io/cloud-provider-azure/pkg/consts"
 	"sigs.k8s.io/cloud-provider-azure/pkg/metrics"
@@ -1154,6 +1154,7 @@ func (ss *ScaleSet) EnsureHostInPool(ctx context.Context, _ *v1.Service, nodeNam
 				NetworkInterfaceConfigurations: networkInterfaceConfigurations,
 			},
 		},
+		Etag: vm.Etag,
 	}
 
 	// Get the node resource group.
@@ -1322,6 +1323,7 @@ func (ss *ScaleSet) ensureVMSSInPool(ctx context.Context, _ *v1.Service, nodes [
 					},
 				},
 			},
+			Etag: vmss.Etag,
 		}
 		defer func() {
 			_ = ss.vmssCache.Delete(consts.VMSSKey)
@@ -1461,17 +1463,13 @@ func (ss *ScaleSet) ensureHostsInPool(ctx context.Context, service *v1.Service, 
 			}
 
 			klog.V(2).InfoS("Begin to update VMs for VMSS with new backendPoolID", logFields...)
-			grp, ctx := errgroup.WithContext(ctx)
-			grp.SetLimit(batchSize)
-			for instanceID, vm := range update {
-				instanceID := instanceID
-				vm := vm
-				grp.Go(func() error {
-					_, rerr := ss.ComputeClientFactory.GetVirtualMachineScaleSetVMClient().Update(ctx, meta.resourceGroup, meta.vmssName, instanceID, vm)
-					return rerr
-				})
+			vmssvmClient := ss.ComputeClientFactory.GetVirtualMachineScaleSetVMClient()
+			c, ok := vmssvmClient.(*virtualmachinescalesetvmclient.Client)
+			if !ok {
+				klog.ErrorS(err, "Failed to get vmssvm client")
+				return nil
 			}
-			rerr := grp.Wait()
+			rerr := virtualmachinescalesetvmclient.UpdateVMsInBatch(ctx, c, meta.resourceGroup, meta.vmssName, update, batchSize)
 			if rerr != nil {
 				klog.ErrorS(err, "Failed to update VMs for VMSS", logFields...)
 				return rerr
@@ -1628,6 +1626,7 @@ func (ss *ScaleSet) ensureBackendPoolDeletedFromNode(ctx context.Context, nodeNa
 				NetworkInterfaceConfigurations: networkInterfaceConfigurations,
 			},
 		},
+		Etag: vm.Etag,
 	}
 
 	// Get the node resource group.
@@ -1946,18 +1945,15 @@ func (ss *ScaleSet) ensureBackendPoolDeleted(ctx context.Context, service *v1.Se
 				klog.ErrorS(err, "Failed to get vmss batch size", logFields...)
 				return err
 			}
-			grp, ctx := errgroup.WithContext(ctx)
-			grp.SetLimit(batchSize)
-			for instanceID, vm := range update {
-				instanceID := instanceID
-				vm := vm
-				grp.Go(func() error {
-					klog.V(2).InfoS("Begin to update VMs for VMSS with new backendPoolID", logFields...)
-					_, rerr := ss.ComputeClientFactory.GetVirtualMachineScaleSetVMClient().Update(ctx, meta.resourceGroup, meta.vmssName, instanceID, vm)
-					return rerr
-				})
+			vmssvmClient := ss.ComputeClientFactory.GetVirtualMachineScaleSetVMClient()
+			c, ok := vmssvmClient.(*virtualmachinescalesetvmclient.Client)
+			if !ok {
+				klog.ErrorS(err, "Failed to get vmssvm client")
+				return nil
 			}
-			err = grp.Wait()
+			klog.V(2).InfoS("Begin to update VMs for VMSS with new backendPoolID", logFields...)
+
+			err = virtualmachinescalesetvmclient.UpdateVMsInBatch(ctx, c, meta.resourceGroup, meta.vmssName, update, batchSize)
 			if err != nil {
 				klog.ErrorS(err, "Failed to update VMs for VMSS", logFields...)
 				return err
@@ -2223,6 +2219,7 @@ func (ss *ScaleSet) EnsureBackendPoolDeletedFromVMSets(ctx context.Context, vmss
 						},
 					},
 				},
+				Etag: vmss.Etag,
 			}
 
 			defer func() {
@@ -2342,6 +2339,9 @@ func (ss *ScaleSet) VMSSBatchSize(ctx context.Context, vmssName string) (int, er
 	}
 	if _, ok := vmss.Tags[consts.VMSSTagForBatchOperation]; ok {
 		batchSize = ss.GetPutVMSSVMBatchSize()
+	}
+	if batchSize <= 0 {
+		batchSize = 1
 	}
 	klog.V(2).InfoS("Fetch VMSS batch size", "vmss", vmssName, "size", batchSize)
 	return batchSize, nil
