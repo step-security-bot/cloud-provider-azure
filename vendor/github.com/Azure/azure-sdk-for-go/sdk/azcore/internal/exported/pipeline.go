@@ -9,6 +9,8 @@ package exported
 import (
 	"errors"
 	"net/http"
+
+	"k8s.io/klog/v2"
 )
 
 // Policy represents an extensibility point for the Pipeline that can mutate the specified
@@ -44,6 +46,8 @@ func (tp transportPolicy) Do(req *Request) (*http.Response, error) {
 	if tp.trans == nil {
 		return nil, errors.New("missing transporter")
 	}
+
+	klog.V(2).Infof("transportPolicy.Do %s", req.Raw().Header)
 	resp, err := tp.trans.Do(req.Raw())
 	if err != nil {
 		return nil, err

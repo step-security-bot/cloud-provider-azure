@@ -169,7 +169,7 @@ func Setup(meter api.Meter) error {
 
 func setupARMRequestLatency(meter api.Meter) error {
 	m, err := meter.Float64Histogram(
-		"arm.request.duration",
+		"arm_request_duration",
 		api.WithUnit("s"),
 		api.WithDescription("Measures the duration of Azure ARM API calls."),
 		api.WithExplicitBucketBoundaries(.1, .25, .5, 1, 2.5, 5, 10, 60, 300, 600),
