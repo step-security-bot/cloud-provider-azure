@@ -59,6 +59,7 @@ type PutResourcesResponse struct {
 	Error error
 }
 
+// UpdateVMsInBatch send the async API calls in parallel, determined by the batch size, and wait for the calls to finish.
 func UpdateVMsInBatch(ctx context.Context, client *Client, resourceGroupName string, VMScaleSetName string, instances map[string]armcompute.VirtualMachineScaleSetVM, batchSize int) error {
 	if len(instances) == 0 {
 		return nil
@@ -77,8 +78,9 @@ func UpdateVMsInBatch(ctx context.Context, client *Client, resourceGroupName str
 	metricsCtx := metrics.BeginARMRequest(client.subscriptionID, resourceGroupName, "VirtualMachineScaleSetVM", fmt.Sprintf("updateinbatch_%d", len(instances)))
 	defer func() { metricsCtx.Observe(ctx, nil) }()
 
-	wg := sync.WaitGroup{}
+	// rateLimiter controls how many async API calls can be sent in parallel.
 	rateLimiter := make(chan struct{}, batchSize)
+	wg := sync.WaitGroup{}
 	var responseLock, pollersLock sync.Mutex
 	pollers := make(map[string]*utils.PollerWrapper[armcompute.VirtualMachineScaleSetVMsClientUpdateResponse])
 	responses := make(map[string]*PutResourcesResponse)
@@ -104,8 +106,8 @@ func UpdateVMsInBatch(ctx context.Context, client *Client, resourceGroupName str
 	}
 	wg.Wait()
 	close(rateLimiter)
-	klog.V(4).Infof("begin to wait async")
 
+	klog.V(4).Infof("begin to wait async")
 	waitAsync(ctx, pollers, responses)
 
 	for _, response := range responses {
